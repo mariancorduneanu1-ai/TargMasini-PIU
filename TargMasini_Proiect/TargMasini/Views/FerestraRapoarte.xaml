@@ -1,0 +1,135 @@
+<Window x:Class="TargMasini.Views.FerestraRapoarte"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Rapoarte și Statistici"
+        Height="680" Width="820"
+        WindowStartupLocation="CenterOwner"
+        Background="#F5F7FA">
+
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin"      Value="0,0,0,10"/>
+            <Setter Property="Padding"     Value="10,8"/>
+            <Setter Property="FontWeight"  Value="Bold"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Height"  Value="30"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Cursor"  Value="Hand"/>
+            <Setter Property="Background" Value="#1565C0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="16">
+
+        <TextBlock Text="📊 Rapoarte – Târg de Mașini"
+                   FontSize="18" FontWeight="Bold" Foreground="#1565C0"
+                   Margin="0,0,0,14"/>
+
+        <!-- =====================================================
+             Raport 1: Cea mai cautata masina ca firma sau model
+             ===================================================== -->
+        <GroupBox Header="1. Cea mai căutată mașină (firmă / model) într-o perioadă">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <TextBlock Text="De la:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <DatePicker x:Name="DpR1Start" Width="120" Margin="0,0,12,0"
+                                FontWeight="Normal"/>
+                    <TextBlock Text="Până la:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <DatePicker x:Name="DpR1End" Width="120" Margin="0,0,12,0"
+                                FontWeight="Normal"/>
+                    <!-- RadioButton: dupa firma sau model (Lab 11) -->
+                    <TextBlock Text="Grupare:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <RadioButton x:Name="RbFirma" Content="Firmă"  GroupName="Grupare"
+                                 IsChecked="True" VerticalAlignment="Center" Margin="0,0,8,0"
+                                 FontWeight="Normal"/>
+                    <RadioButton x:Name="RbModel" Content="Model"  GroupName="Grupare"
+                                 VerticalAlignment="Center" Margin="0,0,12,0"
+                                 FontWeight="Normal"/>
+                    <Button Content="Generează" Click="BtnRaport1_Click"/>
+                </StackPanel>
+                <Border Background="White" BorderBrush="#BBDEFB" BorderThickness="1"
+                        Padding="10,6" MinHeight="60">
+                    <TextBlock x:Name="TbRezultatR1" TextWrapping="Wrap"
+                               FontWeight="Normal" FontSize="13"/>
+                </Border>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- =====================================================
+             Raport 2: Grafic pret pentru un model, pe o perioada
+             ===================================================== -->
+        <GroupBox Header="2. Grafic prețuri pentru un model – pe o perioadă">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <TextBlock Text="Model:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <!-- ComboBox populat dinamic (Lab 9) -->
+                    <ComboBox x:Name="CmbModelGrafic" Width="160" Height="28"
+                              FontWeight="Normal" Margin="0,0,12,0"
+                              DisplayMemberPath="Content"/>
+                    <TextBlock Text="De la:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <DatePicker x:Name="DpR2Start" Width="120" Margin="0,0,12,0"
+                                FontWeight="Normal"/>
+                    <TextBlock Text="Până la:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <DatePicker x:Name="DpR2End" Width="120" Margin="0,0,12,0"
+                                FontWeight="Normal"/>
+                    <Button Content="Generează grafic" Click="BtnRaport2_Click"/>
+                </StackPanel>
+
+                <!-- Canvas pentru grafic simplu (Lab 8) -->
+                <Border BorderBrush="#BBDEFB" BorderThickness="1" Background="White">
+                    <Canvas x:Name="CanvasGrafic" Height="220" ClipToBounds="True"/>
+                </Border>
+                <TextBlock x:Name="TbLegendaGrafic" TextWrapping="Wrap"
+                           Margin="0,4,0,0" FontWeight="Normal" FontSize="11"
+                           Foreground="#555"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- =====================================================
+             Raport 3: Tranzactiile dintr-o anumita zi
+             ===================================================== -->
+        <GroupBox Header="3. Tranzacțiile dintr-o anumită zi">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <TextBlock Text="Data:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <DatePicker x:Name="DpR3Zi" Width="130" FontWeight="Normal"
+                                Margin="0,0,12,0"/>
+                    <Button Content="Afișează" Click="BtnRaport3_Click"/>
+                </StackPanel>
+                <!-- DataGrid pentru rezultate raport 3 (Lab 8) -->
+                <DataGrid x:Name="DgRaport3"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          MaxHeight="160"
+                          GridLinesVisibility="Horizontal"
+                          FontWeight="Normal">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#1565C0"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Padding"    Value="6,4"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Vânzător"   Binding="{Binding NumeVanzator}"   Width="140"/>
+                        <DataGridTextColumn Header="Cumpărător" Binding="{Binding NumeCumparator}" Width="140"/>
+                        <DataGridTextColumn Header="Firmă+Model" Binding="{Binding FirmaSiModel}"  Width="150"/>
+                        <DataGridTextColumn Header="An"         Binding="{Binding AnFabricatie}"   Width="50"/>
+                        <DataGridTextColumn Header="Preț"       Binding="{Binding PretFormatat}"   Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock x:Name="TbTotalR3" Margin="0,4,0,0"
+                           FontWeight="Normal" Foreground="#1565C0"/>
+            </StackPanel>
+        </GroupBox>
+
+        <Button Content="Închide" HorizontalAlignment="Right" Width="100"
+                IsCancel="True"/>
+    </StackPanel>
+    </ScrollViewer>
+</Window>

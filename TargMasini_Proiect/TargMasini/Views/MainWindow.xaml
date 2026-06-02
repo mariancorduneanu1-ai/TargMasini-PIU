@@ -1,0 +1,113 @@
+<Window x:Class="TargMasini.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Târg de Mașini – Evidență Tranzacții"
+        Height="700" Width="1100"
+        WindowStartupLocation="CenterScreen"
+        Background="#F0F4F8">
+
+    <!-- ========================================================
+         CONCEPT WPF: Resources – stiluri reutilizabile (Lab 8)
+         ======================================================== -->
+    <Window.Resources>
+        <Style x:Key="BtnPrimary" TargetType="Button">
+            <Setter Property="Background"     Value="#1565C0"/>
+            <Setter Property="Foreground"     Value="White"/>
+            <Setter Property="FontWeight"     Value="Bold"/>
+            <Setter Property="Height"         Value="34"/>
+            <Setter Property="Padding"        Value="14,0"/>
+            <Setter Property="Margin"         Value="4,0"/>
+            <Setter Property="BorderBrush"    Value="Transparent"/>
+            <Setter Property="Cursor"         Value="Hand"/>
+        </Style>
+        <Style x:Key="BtnDanger" TargetType="Button" BasedOn="{StaticResource BtnPrimary}">
+            <Setter Property="Background" Value="#C62828"/>
+        </Style>
+        <Style x:Key="BtnSecondary" TargetType="Button" BasedOn="{StaticResource BtnPrimary}">
+            <Setter Property="Background" Value="#37474F"/>
+        </Style>
+    </Window.Resources>
+
+    <!-- ========================================================
+         CONCEPT WPF: DockPanel ca layout principal (Lab 8)
+         ======================================================== -->
+    <DockPanel>
+
+        <!-- ====== BARA DE TITLU ====== -->
+        <Border DockPanel.Dock="Top"
+                Background="#1565C0" Padding="16,10">
+            <TextBlock Text="🚗 Târg de Mașini – Evidență Tranzacții"
+                       Foreground="White" FontSize="20" FontWeight="Bold"/>
+        </Border>
+
+        <!-- ====== BARA DE ACTIUNI ====== -->
+        <Border DockPanel.Dock="Top"
+                Background="White"
+                BorderBrush="#D0D0D0" BorderThickness="0,0,0,1"
+                Padding="12,8">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="BtnAdauga"  Content="➕ Adaugă"  Style="{StaticResource BtnPrimary}"   Click="BtnAdauga_Click"/>
+                <Button x:Name="BtnEditeaza" Content="✏ Editează" Style="{StaticResource BtnSecondary}" Click="BtnEditeaza_Click"/>
+                <Button x:Name="BtnSterge"  Content="🗑 Șterge"   Style="{StaticResource BtnDanger}"    Click="BtnSterge_Click"/>
+                <Separator Width="20" Background="Transparent"/>
+                <Button x:Name="BtnRapoarte" Content="📊 Rapoarte" Style="{StaticResource BtnSecondary}" Click="BtnRapoarte_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ====== FILTRU DUPA DATA ====== -->
+        <Border DockPanel.Dock="Top"
+                Background="#E3F2FD" Padding="12,8">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Filtrare după dată:" VerticalAlignment="Center"
+                           FontWeight="Bold" Margin="0,0,8,0"/>
+                <!-- CONCEPT WPF: DatePicker (Lab 9) -->
+                <DatePicker x:Name="DpFiltruData" Width="130" Margin="0,0,8,0"
+                            SelectedDateChanged="DpFiltruData_Changed"/>
+                <Button Content="✖ Resetează filtru" Height="28" Padding="10,0"
+                        Click="BtnResetFiltru_Click" Background="#90A4AE" Foreground="White"
+                        BorderBrush="Transparent" Cursor="Hand"/>
+                <TextBlock x:Name="TbTotalTranzactii"
+                           VerticalAlignment="Center" Margin="20,0,0,0"
+                           Foreground="#1565C0" FontWeight="Bold"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ====== DATAGRID PRINCIPAL ====== -->
+        <!-- CONCEPT WPF: DataGrid (Lab 8) -->
+        <DataGrid x:Name="DgMasini"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  CanUserReorderColumns="False"
+                  CanUserResizeRows="False"
+                  GridLinesVisibility="Horizontal"
+                  AlternatingRowBackground="#F5F9FF"
+                  HeadersVisibility="Column"
+                  Margin="10"
+                  BorderBrush="#BBDEFB"
+                  BorderThickness="1">
+
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background"  Value="#1565C0"/>
+                    <Setter Property="Foreground"  Value="White"/>
+                    <Setter Property="FontWeight"  Value="Bold"/>
+                    <Setter Property="Padding"     Value="8,6"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID"           Binding="{Binding Id}"              Width="40"/>
+                <DataGridTextColumn Header="Vânzător"     Binding="{Binding NumeVanzator}"     Width="140"/>
+                <DataGridTextColumn Header="Cumpărător"   Binding="{Binding NumeCumparator}"   Width="140"/>
+                <DataGridTextColumn Header="Firmă + Model" Binding="{Binding FirmaSiModel}"    Width="160"/>
+                <DataGridTextColumn Header="An Fab."      Binding="{Binding AnFabricatie}"     Width="65"/>
+                <DataGridTextColumn Header="Culoare"      Binding="{Binding Culoare}"          Width="90"/>
+                <DataGridTextColumn Header="Opțiuni"      Binding="{Binding Optiuni}"          Width="160"/>
+                <DataGridTextColumn Header="Data"         Binding="{Binding DataTranzactieStr}" Width="90"/>
+                <DataGridTextColumn Header="Preț"         Binding="{Binding PretFormatat}"     Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </DockPanel>
+</Window>
